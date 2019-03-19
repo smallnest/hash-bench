@@ -1,0 +1,87 @@
+goos: darwin
+goarch: amd64
+pkg: github.com/smallnest/hash-bench
+BenchmarkHash/Sha1-32-4   	 5000000	       286 ns/op	 111.64 MB/s
+BenchmarkHash/Sha256-32-4 	 5000000	       336 ns/op	  95.07 MB/s
+BenchmarkHash/Sha512-32-4 	 3000000	       456 ns/op	  70.09 MB/s
+BenchmarkHash/MD5-32-4    	10000000	       208 ns/op	 153.11 MB/s
+BenchmarkHash/Fnv-32-4    	20000000	        83.0 ns/op	 385.73 MB/s
+BenchmarkHash/CityHash-32-4         	50000000	        27.6 ns/op	1159.16 MB/s
+BenchmarkHash/FarmHash-32-4         	100000000	        18.6 ns/op	1720.49 MB/s
+BenchmarkHash/Murmur3-32-4          	10000000	       120 ns/op	 265.59 MB/s
+BenchmarkHash/Highwayhash-32-4      	10000000	       143 ns/op	 223.00 MB/s
+BenchmarkHash/XXHash64-32-4         	20000000	        71.0 ns/op	 450.78 MB/s
+BenchmarkHash/XXHash64_ASM-32-4      	50000000	        26.2 ns/op	1222.42 MB/s
+
+BenchmarkHash/Sha1-64-4             	 5000000	       399 ns/op	 160.25 MB/s
+BenchmarkHash/Sha256-64-4           	 3000000	       548 ns/op	 116.78 MB/s
+BenchmarkHash/Sha512-64-4           	 3000000	       449 ns/op	 142.22 MB/s
+BenchmarkHash/MD5-64-4              	 5000000	       306 ns/op	 208.58 MB/s
+BenchmarkHash/Fnv-64-4              	10000000	       123 ns/op	 519.01 MB/s
+BenchmarkHash/CityHash-64-4         	20000000	        62.4 ns/op	1026.21 MB/s
+BenchmarkHash/FarmHash-64-4         	50000000	        29.8 ns/op	2144.34 MB/s
+BenchmarkHash/Murmur3-64-4          	10000000	       143 ns/op	 447.26 MB/s
+BenchmarkHash/Highwayhash-64-4      	10000000	       152 ns/op	 418.94 MB/s
+BenchmarkHash/XXHash64-64-4         	20000000	        66.9 ns/op	 956.47 MB/s
+BenchmarkHash/XXHash64_ASM-64-4      	50000000	        28.7 ns/op	2233.56 MB/s
+
+BenchmarkHash/Sha1-128-4            	 3000000	       546 ns/op	 234.28 MB/s
+BenchmarkHash/Sha256-128-4          	 2000000	       735 ns/op	 173.96 MB/s
+BenchmarkHash/Sha512-128-4          	 2000000	       722 ns/op	 177.05 MB/s
+BenchmarkHash/MD5-128-4             	 3000000	       409 ns/op	 312.47 MB/s
+BenchmarkHash/Fnv-128-4             	10000000	       212 ns/op	 602.04 MB/s
+BenchmarkHash/CityHash-128-4        	20000000	       118 ns/op	1077.08 MB/s
+BenchmarkHash/FarmHash-128-4        	20000000	        83.3 ns/op	1536.54 MB/s
+BenchmarkHash/Murmur3-128-4         	10000000	       145 ns/op	 878.83 MB/s
+BenchmarkHash/Highwayhash-128-4     	10000000	       154 ns/op	 827.21 MB/s
+BenchmarkHash/XXHash64-128-4        	20000000	        71.0 ns/op	1803.83 MB/s
+BenchmarkHash/XXHash64_ASM-128-4     	50000000	        33.4 ns/op	3826.73 MB/s
+
+BenchmarkHash/Sha1-256-4            	 2000000	       720 ns/op	 355.19 MB/s
+BenchmarkHash/Sha256-256-4          	 1000000	      1163 ns/op	 220.08 MB/s
+BenchmarkHash/Sha512-256-4          	 2000000	       983 ns/op	 260.27 MB/s
+BenchmarkHash/MD5-256-4             	 2000000	       611 ns/op	 418.77 MB/s
+BenchmarkHash/Fnv-256-4             	 5000000	       372 ns/op	 687.97 MB/s
+BenchmarkHash/CityHash-256-4        	10000000	       219 ns/op	1165.22 MB/s
+BenchmarkHash/FarmHash-256-4        	10000000	       150 ns/op	1695.75 MB/s
+BenchmarkHash/Murmur3-256-4         	10000000	       176 ns/op	1449.57 MB/s
+BenchmarkHash/Highwayhash-256-4     	10000000	       188 ns/op	1357.80 MB/s
+BenchmarkHash/XXHash64-256-4        	20000000	        95.3 ns/op	2686.58 MB/s
+BenchmarkHash/XXHash64_ASM-256-4     	30000000	        45.2 ns/op	5666.22 MB/s
+
+BenchmarkHash/Sha1-512-4            	 1000000	      1009 ns/op	 507.25 MB/s
+BenchmarkHash/Sha256-512-4          	 1000000	      1845 ns/op	 277.50 MB/s
+BenchmarkHash/Sha512-512-4          	 1000000	      1774 ns/op	 288.45 MB/s
+BenchmarkHash/MD5-512-4             	 1000000	      1095 ns/op	 467.57 MB/s
+BenchmarkHash/Fnv-512-4             	 2000000	       756 ns/op	 676.77 MB/s
+BenchmarkHash/CityHash-512-4        	 3000000	       450 ns/op	1137.72 MB/s
+BenchmarkHash/FarmHash-512-4        	 5000000	       321 ns/op	1590.95 MB/s
+BenchmarkHash/Murmur3-512-4         	 5000000	       243 ns/op	2100.73 MB/s
+BenchmarkHash/Highwayhash-512-4     	10000000	       184 ns/op	2782.14 MB/s
+BenchmarkHash/XXHash64-512-4        	20000000	       117 ns/op	4359.08 MB/s
+BenchmarkHash/XXHash64_ASM-512-4     	20000000	        64.6 ns/op	7930.87 MB/s
+
+BenchmarkHash/Sha1-1024-4           	 1000000	      1606 ns/op	 637.48 MB/s
+BenchmarkHash/Sha256-1024-4         	  500000	      3687 ns/op	 277.67 MB/s
+BenchmarkHash/Sha512-1024-4         	  500000	      2641 ns/op	 387.65 MB/s
+BenchmarkHash/MD5-1024-4            	 1000000	      1881 ns/op	 544.33 MB/s
+BenchmarkHash/Fnv-1024-4            	 1000000	      1396 ns/op	 733.00 MB/s
+BenchmarkHash/CityHash-1024-4       	 2000000	       847 ns/op	1208.18 MB/s
+BenchmarkHash/FarmHash-1024-4       	 3000000	       583 ns/op	1754.18 MB/s
+BenchmarkHash/Murmur3-1024-4        	 5000000	       335 ns/op	3049.89 MB/s
+BenchmarkHash/Highwayhash-1024-4    	10000000	       230 ns/op	4447.45 MB/s
+BenchmarkHash/XXHash64-1024-4       	10000000	       161 ns/op	6349.73 MB/s
+BenchmarkHash/XXHash64_ASM-1024-4    	20000000	       105 ns/op	9661.10 MB/s
+
+BenchmarkSha256-4                   	  500000	      3298 ns/op	 310.42 MB/s
+BenchmarkSha512-4                   	  500000	      2546 ns/op	 402.06 MB/s
+BenchmarkMD5-4                      	 1000000	      1838 ns/op	 556.97 MB/s
+BenchmarkFnv-4                      	 1000000	      1369 ns/op	 747.96 MB/s
+BenchmarkCityhash-4                 	 2000000	       811 ns/op	1262.17 MB/s
+BenchmarkFarmhash-4                 	 3000000	       561 ns/op	1824.00 MB/s
+BenchmarkMurmur3-4                  	 5000000	       331 ns/op	3086.16 MB/s
+BenchmarkHighwayhash-4              	10000000	       229 ns/op	4461.45 MB/s
+BenchmarkXXHash64-4                 	10000000	       161 ns/op	6349.75 MB/s
+BenchmarkXXHash64_ASM-4             	20000000	       106 ns/op	9656.75 MB/s
+PASS
+ok  	github.com/smallnest/hash-bench	141.876s
