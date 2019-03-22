@@ -8,11 +8,13 @@ import (
 	"crypto/sha512"
 	"encoding/hex"
 	"fmt"
+	"hash/crc32"
 	"hash/fnv"
 	"testing"
 
 	"bitbucket.org/creachadair/cityhash"
 	xxhashasm "github.com/cespare/xxhash"
+	afarmhash "github.com/dgryski/go-farm"
 	farmhash "github.com/leemcloughlin/gofarmhash"
 	"github.com/minio/highwayhash"
 	"github.com/pierrec/xxHash/xxHash64"
@@ -39,8 +41,10 @@ func BenchmarkHash(b *testing.B) {
 		b.Run(fmt.Sprintf("Sha512-%d", n), BenchmarkSha512)
 		b.Run(fmt.Sprintf("MD5-%d", n), BenchmarkMD5)
 		b.Run(fmt.Sprintf("Fnv-%d", n), BenchmarkFnv)
+		b.Run(fmt.Sprintf("Crc32-%d", n), BenchmarkCrc32)
 		b.Run(fmt.Sprintf("CityHash-%d", n), BenchmarkCityhash)
 		b.Run(fmt.Sprintf("FarmHash-%d", n), BenchmarkFarmhash)
+		b.Run(fmt.Sprintf("Farmhash_dgryski-%d", n), BenchmarkFarmhash_dgryski)
 		b.Run(fmt.Sprintf("Murmur3-%d", n), BenchmarkMurmur3)
 		b.Run(fmt.Sprintf("Highwayhash-%d", n), BenchmarkHighwayhash)
 		b.Run(fmt.Sprintf("XXHash64-%d", n), BenchmarkXXHash64)
@@ -92,6 +96,18 @@ func BenchmarkMD5(b *testing.B) {
 		_ = x.Sum(nil)
 	}
 }
+
+func BenchmarkCrc32(b *testing.B) {
+	b.SetBytes(n)
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		x := crc32.NewIEEE()
+		x.Write(testBytes)
+		_ = x.Sum32()
+	}
+}
+
 func BenchmarkFnv(b *testing.B) {
 	b.SetBytes(n)
 	b.ResetTimer()
@@ -99,7 +115,7 @@ func BenchmarkFnv(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		x := fnv.New64()
 		x.Write(testBytes)
-		_ = x.Sum(nil)
+		_ = x.Sum64()
 	}
 }
 
@@ -121,6 +137,15 @@ func BenchmarkFarmhash(b *testing.B) {
 	}
 }
 
+func BenchmarkFarmhash_dgryski(b *testing.B) {
+	b.SetBytes(n)
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		_ = afarmhash.Hash64WithSeed(testBytes, 0xCAFE)
+	}
+}
+
 func BenchmarkMurmur3(b *testing.B) {
 	b.SetBytes(n)
 	b.ResetTimer()
@@ -128,7 +153,7 @@ func BenchmarkMurmur3(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		x := murmur3.New64()
 		x.Write(testBytes)
-		_ = x.Sum(nil)
+		_ = x.Sum64()
 	}
 }
 func BenchmarkHighwayhash(b *testing.B) {
@@ -140,7 +165,7 @@ func BenchmarkHighwayhash(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		x, _ := highwayhash.New64(key)
 		x.Write(testBytes)
-		_ = x.Sum(nil)
+		_ = x.Sum64()
 	}
 }
 
