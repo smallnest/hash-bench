@@ -10,10 +10,12 @@ import (
 	"fmt"
 	"hash/crc32"
 	"hash/fnv"
+	_ "runtime"
 	"testing"
+	"unsafe"
 
-	"bitbucket.org/creachadair/cityhash"
 	xxhashasm "github.com/cespare/xxhash"
+	"github.com/creachadair/cityhash"
 	afarmhash "github.com/dgryski/go-farm"
 	farmhash "github.com/leemcloughlin/gofarmhash"
 	"github.com/minio/highwayhash"
@@ -49,71 +51,79 @@ func BenchmarkHash(b *testing.B) {
 		b.Run(fmt.Sprintf("Highwayhash-%d", n), BenchmarkHighwayhash)
 		b.Run(fmt.Sprintf("XXHash64-%d", n), BenchmarkXXHash64)
 		b.Run(fmt.Sprintf("XXHash64_ASM-%d", n), BenchmarkXXHash64_ASM)
+		b.Run(fmt.Sprintf("MapHash64-%d", n), BenchmarkMapHash64)
 		fmt.Println()
 	}
 
 }
 
 func benchmarkSha1(b *testing.B) {
+	x := sha1.New()
+
 	b.SetBytes(n)
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		x := sha1.New()
+		x.Reset()
 		x.Write(testBytes)
 		_ = x.Sum(nil)
 	}
 }
 func BenchmarkSha256(b *testing.B) {
+	x := sha256.New()
 	b.SetBytes(n)
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		x := sha256.New()
+		x.Reset()
 		x.Write(testBytes)
 		_ = x.Sum(nil)
 	}
 }
 
 func BenchmarkSha512(b *testing.B) {
+	x := sha512.New()
 	b.SetBytes(n)
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		x := sha512.New()
+		x.Reset()
 		x.Write(testBytes)
 		_ = x.Sum(nil)
 	}
 }
 
 func BenchmarkMD5(b *testing.B) {
+	x := md5.New()
 	b.SetBytes(n)
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		x := md5.New()
+		x.Reset()
 		x.Write(testBytes)
 		_ = x.Sum(nil)
 	}
 }
 
 func BenchmarkCrc32(b *testing.B) {
+	x := crc32.NewIEEE()
 	b.SetBytes(n)
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		x := crc32.NewIEEE()
+		x.Reset()
 		x.Write(testBytes)
 		_ = x.Sum32()
 	}
 }
 
 func BenchmarkFnv(b *testing.B) {
+	x := fnv.New64()
 	b.SetBytes(n)
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		x := fnv.New64()
+		x.Reset()
 		x.Write(testBytes)
 		_ = x.Sum64()
 	}
@@ -147,46 +157,71 @@ func BenchmarkFarmhash_dgryski(b *testing.B) {
 }
 
 func BenchmarkMurmur3(b *testing.B) {
+	x := murmur3.New64()
 	b.SetBytes(n)
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		x := murmur3.New64()
+		x.Reset()
 		x.Write(testBytes)
 		_ = x.Sum64()
 	}
 }
 func BenchmarkHighwayhash(b *testing.B) {
 	key, _ := hex.DecodeString("000102030405060708090A0B0C0D0E0FF0E0D0C0B0A090807060504030201000") // use your own key here
-
+	x, _ := highwayhash.New64(key)
 	b.SetBytes(n)
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		x, _ := highwayhash.New64(key)
+		x.Reset()
 		x.Write(testBytes)
 		_ = x.Sum64()
 	}
 }
 
 func BenchmarkXXHash64(b *testing.B) {
+	x := xxHash64.New(0xCAFE)
 	b.SetBytes(n)
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		x := xxHash64.New(0xCAFE)
+		x.Reset()
 		x.Write(testBytes)
 		_ = x.Sum64()
 	}
 }
 
 func BenchmarkXXHash64_ASM(b *testing.B) {
+	x := xxhashasm.New()
 	b.SetBytes(n)
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		x := xxhashasm.New()
+		x.Reset()
 		x.Write(testBytes)
 		_ = x.Sum64()
+	}
+}
+
+//go:noescape
+//go:linkname memhash runtime.memhash
+func memhash(p unsafe.Pointer, h, s uintptr) uintptr
+
+type stringStruct struct {
+	str unsafe.Pointer
+	len int
+}
+
+func MemHash(data []byte) uint64 {
+	ss := (*stringStruct)(unsafe.Pointer(&data))
+	return uint64(memhash(ss.str, 0, uintptr(ss.len)))
+}
+func BenchmarkMapHash64(b *testing.B) {
+	b.SetBytes(n)
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		_ = MemHash(testBytes)
 	}
 }

@@ -42,4 +42,5 @@ func main() {
 	fmt.Println("Highwayhash,", m["Highwayhash"])
 	fmt.Println("XXHash64,", m["XXHash64"])
 	fmt.Println("XXHash64_ASM,", m["XXHash64_ASM"])
+	fmt.Println("MapHash64,", m["MapHash64"])
 }
