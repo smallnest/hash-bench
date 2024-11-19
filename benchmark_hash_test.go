@@ -20,6 +20,7 @@ import (
 	farmhash "github.com/leemcloughlin/gofarmhash"
 	"github.com/minio/highwayhash"
 	"github.com/pierrec/xxHash/xxHash64"
+	"github.com/smallnest/chibihash"
 	"github.com/spaolacci/murmur3"
 )
 
@@ -52,6 +53,7 @@ func BenchmarkHash(b *testing.B) {
 		b.Run(fmt.Sprintf("XXHash64-%d", n), BenchmarkXXHash64)
 		b.Run(fmt.Sprintf("XXHash64_ASM-%d", n), BenchmarkXXHash64_ASM)
 		b.Run(fmt.Sprintf("MapHash64-%d", n), BenchmarkMapHash64)
+		b.Run(fmt.Sprintf("ChibiHash64-%d", n), BenchmarkChibiHash)
 		fmt.Println()
 	}
 
@@ -223,5 +225,16 @@ func BenchmarkMapHash64(b *testing.B) {
 
 	for i := 0; i < b.N; i++ {
 		_ = MemHash(testBytes)
+	}
+}
+
+func BenchmarkChibiHash(b *testing.B) {
+	seed := uint64(0)
+
+	b.SetBytes(n)
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		_ = chibihash.Hash64(testBytes, seed)
 	}
 }

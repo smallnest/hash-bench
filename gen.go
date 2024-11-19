@@ -43,4 +43,5 @@ func main() {
 	fmt.Println("XXHash64,", m["XXHash64"])
 	fmt.Println("XXHash64_ASM,", m["XXHash64_ASM"])
 	fmt.Println("MapHash64,", m["MapHash64"])
+	fmt.Println("ChibiHash64,", m["ChibiHash64"])
 }

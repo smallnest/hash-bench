@@ -11,6 +11,7 @@
 - [HighwayHash](https://github.com/minio/highwayhash)
 - [XXHash](https://github.com/pierrec/xxHash/xxHash64)
 - [XXHash with ASM](https://github.com/cespare/xxhash)
+- [chibihash](https://github.com/smallnest/chibihash)
 
 
 ![](benchmark.png)

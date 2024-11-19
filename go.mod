@@ -1,6 +1,6 @@
 module github.com/smallnest/hash-bench
 
-go 1.13
+go 1.23.0
 
 require (
 	github.com/cespare/xxhash v1.1.0
@@ -10,4 +10,10 @@ require (
 	github.com/minio/highwayhash v1.0.0
 	github.com/pierrec/xxHash v0.1.5
 	github.com/spaolacci/murmur3 v1.1.0
+)
+
+require (
+	github.com/OneOfOne/xxhash v1.2.2 // indirect
+	github.com/smallnest/chibihash v0.0.0-20241119011146-a9d69e6aafcb // indirect
+	golang.org/x/sys v0.0.0-20190130150945-aca44879d564 // indirect
 )
