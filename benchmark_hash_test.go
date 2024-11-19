@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"hash/crc32"
 	"hash/fnv"
+	"hash/maphash"
 	_ "runtime"
 	"testing"
 	"unsafe"
@@ -53,6 +54,7 @@ func BenchmarkHash(b *testing.B) {
 		b.Run(fmt.Sprintf("XXHash64-%d", n), BenchmarkXXHash64)
 		b.Run(fmt.Sprintf("XXHash64_ASM-%d", n), BenchmarkXXHash64_ASM)
 		b.Run(fmt.Sprintf("MapHash64-%d", n), BenchmarkMapHash64)
+		b.Run(fmt.Sprintf("StdMapHash64-%d", n), BenchmarkStdMapHash64)
 		b.Run(fmt.Sprintf("ChibiHash64-%d", n), BenchmarkChibiHash)
 		fmt.Println()
 	}
@@ -225,6 +227,18 @@ func BenchmarkMapHash64(b *testing.B) {
 
 	for i := 0; i < b.N; i++ {
 		_ = MemHash(testBytes)
+	}
+}
+
+func BenchmarkStdMapHash64(b *testing.B) {
+	x := &maphash.Hash{}
+	b.SetBytes(n)
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		x.Reset()
+		x.Write(testBytes)
+		_ = x.Sum64()
 	}
 }
 

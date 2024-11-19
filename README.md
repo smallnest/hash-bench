@@ -5,6 +5,7 @@
 - SHA512
 - MD5
 - Fnv
+- [std/maphash](https://pkg.go.dev/hash/maphash@go1.23.3)
 - [CityHash](https://bitbucket.org/creachadair/cityhash)
 - [FarmHash](https://github.com/leemcloughlin/gofarmhash)
 - [Murmur3](https://github.com/spaolacci/murmur3)
