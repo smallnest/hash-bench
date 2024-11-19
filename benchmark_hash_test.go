@@ -20,6 +20,7 @@ import (
 	afarmhash "github.com/dgryski/go-farm"
 	farmhash "github.com/leemcloughlin/gofarmhash"
 	"github.com/minio/highwayhash"
+	sha256simd "github.com/minio/sha256-simd"
 	"github.com/pierrec/xxHash/xxHash64"
 	"github.com/smallnest/chibihash"
 	"github.com/spaolacci/murmur3"
@@ -42,6 +43,7 @@ func BenchmarkHash(b *testing.B) {
 
 		b.Run(fmt.Sprintf("Sha1-%d", n), benchmarkSha1)
 		b.Run(fmt.Sprintf("Sha256-%d", n), BenchmarkSha256)
+		b.Run(fmt.Sprintf("Sha256SIMD-%d", n), BenchmarkSha256SIMD)
 		b.Run(fmt.Sprintf("Sha512-%d", n), BenchmarkSha512)
 		b.Run(fmt.Sprintf("MD5-%d", n), BenchmarkMD5)
 		b.Run(fmt.Sprintf("Fnv-%d", n), BenchmarkFnv)
@@ -75,6 +77,18 @@ func benchmarkSha1(b *testing.B) {
 }
 func BenchmarkSha256(b *testing.B) {
 	x := sha256.New()
+	b.SetBytes(n)
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		x.Reset()
+		x.Write(testBytes)
+		_ = x.Sum(nil)
+	}
+}
+
+func BenchmarkSha256SIMD(b *testing.B) {
+	x := sha256simd.New()
 	b.SetBytes(n)
 	b.ResetTimer()
 

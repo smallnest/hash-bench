@@ -14,6 +14,9 @@ require (
 
 require (
 	github.com/OneOfOne/xxhash v1.2.2 // indirect
+	github.com/klauspost/cpuid/v2 v2.2.3 // indirect
+	github.com/minio/sha256-simd v1.0.1 // indirect
+	github.com/ogxd/gxhash v0.0.0-20241114134446-eab2961232df // indirect
 	github.com/smallnest/chibihash v0.0.0-20241119011146-a9d69e6aafcb // indirect
-	golang.org/x/sys v0.0.0-20190130150945-aca44879d564 // indirect
+	golang.org/x/sys v0.0.0-20220704084225-05e143d24a9e // indirect
 )
