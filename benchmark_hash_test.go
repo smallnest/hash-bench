@@ -8,6 +8,7 @@ import (
 	"crypto/sha512"
 	"encoding/hex"
 	"fmt"
+	"hash/adler32"
 	"hash/crc32"
 	"hash/fnv"
 	"hash/maphash"
@@ -24,6 +25,7 @@ import (
 	"github.com/pierrec/xxHash/xxHash64"
 	"github.com/smallnest/chibihash"
 	"github.com/spaolacci/murmur3"
+	"golang.org/x/crypto/blake2b"
 )
 
 var n int64
@@ -47,6 +49,7 @@ func BenchmarkHash(b *testing.B) {
 		b.Run(fmt.Sprintf("Sha512-%d", n), BenchmarkSha512)
 		b.Run(fmt.Sprintf("MD5-%d", n), BenchmarkMD5)
 		b.Run(fmt.Sprintf("Fnv-%d", n), BenchmarkFnv)
+		b.Run(fmt.Sprintf("Adler32-%d", n), BenchmarkAdler32)
 		b.Run(fmt.Sprintf("Crc32-%d", n), BenchmarkCrc32)
 		b.Run(fmt.Sprintf("CityHash-%d", n), BenchmarkCityhash)
 		b.Run(fmt.Sprintf("FarmHash-%d", n), BenchmarkFarmhash)
@@ -58,6 +61,7 @@ func BenchmarkHash(b *testing.B) {
 		b.Run(fmt.Sprintf("MapHash64-%d", n), BenchmarkMapHash64)
 		b.Run(fmt.Sprintf("StdMapHash64-%d", n), BenchmarkStdMapHash64)
 		b.Run(fmt.Sprintf("ChibiHash64-%d", n), BenchmarkChibiHash)
+		b.Run(fmt.Sprintf("Blake2b-%d", n), BenchmarkBlake2b)
 		fmt.Println()
 	}
 
@@ -123,6 +127,17 @@ func BenchmarkMD5(b *testing.B) {
 	}
 }
 
+func BenchmarkAdler32(b *testing.B) {
+	x := adler32.New()
+	b.SetBytes(n)
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		x.Reset()
+		x.Write(testBytes)
+		_ = x.Sum32()
+	}
+}
 func BenchmarkCrc32(b *testing.B) {
 	x := crc32.NewIEEE()
 	b.SetBytes(n)
@@ -264,5 +279,18 @@ func BenchmarkChibiHash(b *testing.B) {
 
 	for i := 0; i < b.N; i++ {
 		_ = chibihash.Hash64(testBytes, seed)
+	}
+}
+
+func BenchmarkBlake2b(b *testing.B) {
+	x, _ := blake2b.New256(nil)
+
+	b.SetBytes(n)
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		x.Reset()
+		x.Write(testBytes)
+		_ = x.Sum(nil)
 	}
 }

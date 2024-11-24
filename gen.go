@@ -35,6 +35,7 @@ func main() {
 	fmt.Println("Sha256,", m["Sha256"])
 	fmt.Println("Sha256-simd,", m["Sha256SIMD"])
 	fmt.Println("Sha512,", m["Sha512"])
+	fmt.Println("Adler32,", m["Adler32"])
 	fmt.Println("MD5,", m["MD5"])
 	fmt.Println("Fnv,", m["Fnv"])
 	fmt.Println("CityHash,", m["CityHash"])
@@ -46,4 +47,5 @@ func main() {
 	fmt.Println("MapHash64,", m["MapHash64"])
 	fmt.Println("StdMapHash64,", m["StdMapHash64"])
 	fmt.Println("ChibiHash64,", m["ChibiHash64"])
+	fmt.Println("Blake2b,", m["Blake2b"])
 }
